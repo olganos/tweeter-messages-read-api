@@ -17,5 +17,8 @@ public class TweetProfile : Profile
 
         CreateMap<Reply, ReplyDto>()
             .ReverseMap();
+
+        CreateMap<User, UserDto>()
+           .ReverseMap();
     }
 }

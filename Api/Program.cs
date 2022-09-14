@@ -1,11 +1,17 @@
 using Core;
+
 using Infrastructure.Repositories;
+
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
 using Prometheus;
+
 using Serilog;
+
 using System.Text.Json;
+
 using static System.Net.Mime.MediaTypeNames;
 
 var logConfig = new LoggerConfiguration()
@@ -40,6 +46,15 @@ try
             ?? builder.Configuration.GetValue<string>("MongoDbSettings:DbTweetCollectionName"),
         Environment.GetEnvironmentVariable("DB_REPLY_COLLECTION")
             ?? builder.Configuration.GetValue<string>("MongoDbSettings:DbReplyCollectionName")
+    ));
+
+    builder.Services.AddSingleton<IUserRepository>(sp => new UserRepository(
+        Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+            ?? builder.Configuration.GetValue<string>("MongoDbSettings:ConnectionString"),
+        Environment.GetEnvironmentVariable("DB_NAME")
+            ?? builder.Configuration.GetValue<string>("MongoDbSettings:DbName"),
+        Environment.GetEnvironmentVariable("DB_USER_COLLECTION")
+            ?? builder.Configuration.GetValue<string>("MongoDbSettings:DbUserCollectionName")
     ));
 
     builder.Services.AddControllers();
