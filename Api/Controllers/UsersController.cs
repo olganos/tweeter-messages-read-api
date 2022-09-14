@@ -31,9 +31,9 @@ namespace Api.Controllers
         }
 
         [HttpGet("user/search/{username}")]
-        public async Task<List<UserDto>> SearchByPartialUsernamel(string partialUsername, CancellationToken cancellationToken)
+        public async Task<List<UserDto>> SearchByPartialUsernamel(string username, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.SearchByPartialUsernameAsync(partialUsername, cancellationToken);
+            var users = await _userRepository.SearchByPartialUsernameAsync(username, cancellationToken);
             // todo: check the user
             return _mapper.Map<List<UserDto>>(users);
         }

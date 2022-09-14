@@ -7,5 +7,6 @@
         public string UserName { get; set; }
         public DateTimeOffset Created { get; set; }
         public int Likes { get; set; }
+        public List<ReplyDto> Replies { get; set; }
     }
 }

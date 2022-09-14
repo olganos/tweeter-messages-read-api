@@ -29,11 +29,11 @@ namespace Api.Controllers
         }
 
         [HttpGet("{username}")]
-        public async Task<List<FullTweetDto>> All(string username, CancellationToken cancellationToken)
+        public async Task<List<TweetDto>> All(string username, CancellationToken cancellationToken)
         {
             var tweets = await _messageRepository.GetByUsernameAsync(username, cancellationToken);
             // todo: check the user
-            return _mapper.Map<List<FullTweetDto>>(tweets);
+            return _mapper.Map<List<TweetDto>>(tweets);
         }
     }
 }

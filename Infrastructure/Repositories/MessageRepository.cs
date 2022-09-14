@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Entities;
+
 using MongoDB.Driver;
 
 namespace Infrastructure.Repositories
@@ -19,7 +20,14 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Tweet>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _tweetsCollection.Find(_ => true).ToListAsync(cancellationToken);
+            return await _tweetsCollection
+                .Aggregate()
+                .Lookup<Tweet, Reply, Tweet>(
+                    _repliesCollection,
+                    x => x.Id,
+                    x => x.TweetId,
+                    p => p.Replies)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<List<Tweet>> GetByUsernameAsync(string username, CancellationToken cancellationToken)

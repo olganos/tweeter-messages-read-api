@@ -22,8 +22,9 @@ namespace Infrastructure.Repositories
 
         public async Task<List<User>> SearchByPartialUsernameAsync(string partialUsername, CancellationToken cancellationToken)
         {
+            FilterDefinition<User> userSearchFilter = Builders<User>.Filter.Regex(x => x.UserName, $"/{partialUsername}/");
             return await _userCollection
-                .Find(x => x.UserName.Contains(partialUsername, StringComparison.OrdinalIgnoreCase))
+                .Find(userSearchFilter)
                 .ToListAsync(cancellationToken);
         }
     }
