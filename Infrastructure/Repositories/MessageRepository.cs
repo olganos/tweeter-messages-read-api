@@ -27,6 +27,7 @@ namespace Infrastructure.Repositories
                     x => x.Id,
                     x => x.TweetId,
                     p => p.Replies)
+                .SortByDescending(x => x.Created)
                 .ToListAsync(cancellationToken);
         }
 
@@ -42,6 +43,7 @@ namespace Infrastructure.Repositories
                     x => x.Id,
                     x => x.TweetId,
                     p => p.Replies)
+                .SortByDescending(x => x.Created)
                 .ToListAsync(cancellationToken);
         }
     }

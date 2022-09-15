@@ -17,7 +17,10 @@ namespace Infrastructure.Repositories
 
         public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _userCollection.Find(_ => true).ToListAsync(cancellationToken);
+            return await _userCollection
+                .Find(_ => true)
+                .SortByDescending(x => x.UserName)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<List<User>> SearchByPartialUsernameAsync(string partialUsername, CancellationToken cancellationToken)
@@ -25,6 +28,7 @@ namespace Infrastructure.Repositories
             FilterDefinition<User> userSearchFilter = Builders<User>.Filter.Regex(x => x.UserName, $"/{partialUsername}/");
             return await _userCollection
                 .Find(userSearchFilter)
+                .SortByDescending(x => x.UserName)
                 .ToListAsync(cancellationToken);
         }
     }
