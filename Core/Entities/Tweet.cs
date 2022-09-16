@@ -21,7 +21,7 @@ namespace Core.Entities
         [BsonRequired]
         public DateTimeOffset Created { get; set; }
 
-        public int Likes { get; set; }
+        public List<Like> Likes { get; set; }
 
         public List<Reply> Replies { get; set; }
     }

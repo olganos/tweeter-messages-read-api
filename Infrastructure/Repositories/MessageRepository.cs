@@ -9,13 +9,15 @@ namespace Infrastructure.Repositories
     {
         private readonly IMongoCollection<Tweet> _tweetsCollection;
         private readonly IMongoCollection<Reply> _repliesCollection;
+        private readonly IMongoCollection<Like> _likesCollection;
         public MessageRepository(string connectionString, string databaseName,
-            string tweetCollectionName, string replyCollectionName)
+            string tweetCollectionName, string replyCollectionName, string likeCollectionName)
         {
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(databaseName);
             _tweetsCollection = database.GetCollection<Tweet>(tweetCollectionName);
             _repliesCollection = database.GetCollection<Reply>(replyCollectionName);
+            _likesCollection = database.GetCollection<Like>(likeCollectionName);
         }
 
         public async Task<List<Tweet>> GetAllAsync(CancellationToken cancellationToken)
@@ -27,6 +29,11 @@ namespace Infrastructure.Repositories
                     x => x.Id,
                     x => x.TweetId,
                     p => p.Replies)
+                .Lookup<Tweet, Like, Tweet>(
+                    _likesCollection,
+                    x => x.Id,
+                    x => x.TweetId,
+                    p => p.Likes)
                 .SortByDescending(x => x.Created)
                 .ToListAsync(cancellationToken);
         }
@@ -43,6 +50,11 @@ namespace Infrastructure.Repositories
                     x => x.Id,
                     x => x.TweetId,
                     p => p.Replies)
+                .Lookup<Tweet, Like, Tweet>(
+                    _likesCollection,
+                    x => x.Id,
+                    x => x.TweetId,
+                    p => p.Likes)
                 .SortByDescending(x => x.Created)
                 .ToListAsync(cancellationToken);
         }

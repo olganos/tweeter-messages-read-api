@@ -1,7 +1,10 @@
 ﻿using Api.Dto;
+
 using AutoMapper;
+
 using Core;
 using Core.Entities;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -22,7 +25,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<List<TweetDto>> All(CancellationToken cancellationToken)
+        public async Task<IEnumerable<TweetDto>> All(CancellationToken cancellationToken)
         {
             var tweets = await _messageRepository.GetAllAsync(cancellationToken);
             return _mapper.Map<List<TweetDto>>(tweets);
