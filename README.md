@@ -1,3 +1,4 @@
 # tweeter-messages-read-api
 
-The api for read querries only.
+This is a read api for the tweeter app
+It is used for read querries only (get tweet or tweets, etc)
