@@ -9,6 +9,7 @@ namespace Core.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
+        // add index for the field if use Cosmos Azure DB via admin-panel
         [BsonRequired]
         public string UserName { get; set; }
 

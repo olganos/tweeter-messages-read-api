@@ -9,32 +9,31 @@ using Microsoft.OpenApi.Models;
 using Prometheus;
 
 using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 using System.Text.Json;
 
 using static System.Net.Mime.MediaTypeNames;
 
-var logConfig = new LoggerConfiguration()
-    .MinimumLevel.Warning();
-
-if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("LOGSTASH_URI")))
-{
-    logConfig
-        .WriteTo
-        .Http(Environment.GetEnvironmentVariable("LOGSTASH_URI"), null);
-}
-else
-{
-    logConfig
-        .WriteTo
-        .Console();
-}
-
-Log.Logger = logConfig.CreateLogger();
-
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+
+    builder.Host.UseSerilog((context, logConfiguration) =>
+    {
+        logConfiguration
+            .Enrich.FromLogContext()
+            .Enrich.WithMachineName()
+            .WriteTo.Console()
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Environment.GetEnvironmentVariable("ELASTICSEARCH_URI")
+                ?? context.Configuration["ElasticConfiguration:Uri"]))
+            {
+                IndexFormat = $"tweeter-read-api-logs",
+                AutoRegisterTemplate = true,
+                NumberOfShards = 2,
+                NumberOfReplicas = 1
+            }).Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName).ReadFrom.Configuration(context.Configuration);
+    });
 
     // Add services to the container.
     builder.Services.AddSingleton<IMessageRepository>(sp => new MessageRepository(

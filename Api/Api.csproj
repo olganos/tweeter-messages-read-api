@@ -15,10 +15,14 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageReference Include="serilog.sinks.elasticsearch" Version="8.4.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
     <PackageReference Include="Serilog.Sinks.Http" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
